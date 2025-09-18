@@ -8,9 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     if ($username === $valid_user && $password === $valid_pass) {
-        $_SESSION['logged_in'] = true;
-        header('Location: index.html');
-        exit();
+    $_SESSION['logged_in'] = true;
+    header('Location: home.html');
+    exit();
     } else {
         $error = 'Invalid username or password.';
     }
