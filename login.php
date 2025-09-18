@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 // Simple hardcoded credentials
 $valid_user = 'user';
@@ -8,9 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     if ($username === $valid_user && $password === $valid_pass) {
-    $_SESSION['logged_in'] = true;
-    header('Location: home.html');
-    exit();
+        $_SESSION['logged_in'] = true;
+        header('Location: home.php');
+        exit();
     } else {
         $error = 'Invalid username or password.';
     }
