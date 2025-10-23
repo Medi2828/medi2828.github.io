@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; }
+        .login-container {
+            max-width: 350px;
+            margin: 80px auto;
+            background: #fff;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        h2 { text-align: center; color: #0078d7; }
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 16px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #0078d7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #006cbd;
+        }
+        .message { 
+            text-align: center; 
+            margin-bottom: 12px; 
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .error { 
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success { 
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <div id="messageBox" style="display: none;" class="message"></div>
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <hr style="margin:24px 0;">
+        <h2>Register</h2>
+        <form id="registerForm" onsubmit="return handleRegister(event)">
+            <input type="text" id="reg_username" placeholder="New Username" required>
+            <input type="password" id="reg_password" placeholder="New Password" required>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        function showMessage(message, isError = false) {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+            messageBox.className = 'message ' + (isError ? 'error' : 'success');
+            messageBox.style.display = 'block';
+            setTimeout(() => messageBox.style.display = 'none', 3000);
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const username = document.getElementById('reg_username').value;
+            const password = document.getElementById('reg_password').value;
+
+            // Store credentials
+            localStorage.setItem('registered_user', username);
+            localStorage.setItem('registered_pass', password);
+            
+            showMessage('Registration successful! You can now log in.');
+            document.getElementById('registerForm').reset();
+            return false;
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const storedUser = localStorage.getItem('registered_user');
+            const storedPass = localStorage.getItem('registered_pass');
+
+            if (username === storedUser && password === storedPass) {
+                localStorage.setItem('logged_in', 'true');
+                window.location.href = 'home.html';
+            } else {
+                showMessage('Invalid username or password.', true);
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
