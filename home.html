@@ -1,16 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>My Portfolio</title>
-	<style>
-		body {
-			font-family: 'Segoe UI', Arial, sans-serif;
-			background: #f4f4f4;
-			margin: 0;
-			padding: 0;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Space</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-menu {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+        .nav-menu.collapsed {
+            transform: translateX(-220px);
+        }
+        .menu-toggle {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #0078d7;
+        }
+        .profile-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            object-fit: cover;
+            border: 3px solid #0078d7;
+        }
+        .profile-name {
+            font-size: 1.2em;
+            color: #333;
+            margin: 10px 0;
+        }
+        .nav-links {
+            list-style: none;
+            padding: 0;
+        }
+        .nav-links li {
+            margin: 10px 0;
+        }
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+        .nav-links a:hover {
+            background: #f0f8ff;
+            color: #0078d7;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+        .main-content.expanded {
+            margin-left: 30px;
+        }
+        .section-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        #notesArea {
+            width: 100%;
+            min-height: 400px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .save-btn {
+            background: #0078d7;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .dashboard-section {
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .dashboard-section h3 {
+            color: #0078d7;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .editable-area {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            background: white;
+        }
+        [contenteditable="true"]:empty:before {
+            content: attr(placeholder);
+            color: #999;
+            font-style: italic;
+        }
+        .save-btn:hover {
+            background: #006cbd;
+        }
+        .profile-upload {
+            margin-top: 10px;
+        }
+        #profileUpload {
+            display: none;
+        }
+        .upload-btn {
+            background: #0078d7;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
 		.container {
 			max-width: 800px;
 			margin: 40px auto;
@@ -67,40 +208,152 @@
 	</style>
 </head>
 <body>
-	<div class="container">
-		<div class="profile">
-			<img src="https://i.pravatar.cc/100?u=portfolio" alt="Profile Photo">
-			<div>
-				<h1>Krijn Helder</h1>
-				<p>Student at Keizer Karel College</p>
-			</div>
-		</div>
-		<div class="about">
-			<h2>About Me</h2>
-			<p>Hello! I am 16 years old.</p>
-		</div>
-		<div>
-			<h2>Projects</h2>
-			<ul class="projects">
-				<li>
-					<strong>Portfolio Website</strong><br>
-					A personal portfolio to showcase my work and skills.
-				</li>
-				<li>
-					<strong>Blog Platform</strong><br>
-					A simple blog platform built with HTML, CSS, and JavaScript.
-				</li>
-				<li>
-					<strong>Landing Page</strong><br>
-					A modern landing page for a startup.
-				</li>
-			</ul>
-		</div>
-		<div class="contact">
-			<h2>Contact</h2>
-			<p>Email: <a href="mailto:8372@leerling.keizerkarel.com">8372@leerling.keizerkarelcollege.nl</a></p>
-			<p>GitHub: <a href="https://github.com/medi2828" target="_blank">github.com/medi2828</a></p>
-		</div>
-	</div>
+    <script>
+        // Check if user is logged in
+        if (!localStorage.getItem('logged_in')) {
+            window.location.href = 'index.html';
+        }
+    </script>
+    <div class="nav-menu">
+        <button class="menu-toggle">≡</button>
+        <div class="profile-section">
+            <img src="https://i.pravatar.cc/100?img=0" alt="Profile Photo" class="profile-pic" id="profilePic">
+            <div class="profile-upload">
+                <label for="profileUpload" class="upload-btn">Change Photo</label>
+                <input type="file" id="profileUpload" accept="image/*">
+            </div>
+            <div class="profile-name">Hi <span id="username">User</span>!</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('home')">Home</a></li>
+            <li><a href="#" onclick="showSection('notes')">Notes</a></li>
+            <li><a href="#" onclick="showSection('music')">Study Music</a></li>
+            <li><a href="#" onclick="showSection('tools')">Study Tools</a></li>
+            <li><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="home" class="section-container">
+            <h2>My Dashboard</h2>
+            <div class="dashboard-section">
+                <h3>Welcome Message</h3>
+                <textarea id="welcomeMessage" class="editable-area" placeholder="Add a personal welcome message..."></textarea>
+            </div>
+            <div class="dashboard-section">
+                <h3>Quick Links</h3>
+                <div id="quickLinks" class="editable-area" contenteditable="true" placeholder="Add your frequently used links here..."></div>
+            </div>
+            <div class="dashboard-section">
+                <h3>Study Goals</h3>
+                <div id="studyGoals" class="editable-area" contenteditable="true" placeholder="List your study goals here..."></div>
+            </div>
+            <button onclick="saveDashboard()" class="save-btn">Save Dashboard</button>
+        </div>
+
+        <div id="notes" class="section-container" style="display: none;">
+            <h2>My Notes</h2>
+            <textarea id="notesArea" placeholder="Start taking notes here..."></textarea>
+            <button onclick="saveNotes()" class="save-btn">Save Notes</button>
+        </div>
+    </div>
+
+    <script>
+        // Check login status
+        if (!localStorage.getItem('logged_in')) {
+            window.location.href = 'index.html';
+        }
+
+        // Set username
+        const currentUser = localStorage.getItem('registered_user');
+        document.getElementById('username').textContent = currentUser;
+
+        // Load saved notes
+        const savedNotes = localStorage.getItem(currentUser + '_notes');
+        if (savedNotes) {
+            document.getElementById('notesArea').value = savedNotes;
+        }
+
+        // Load saved dashboard content
+        const savedWelcome = localStorage.getItem(currentUser + '_welcome');
+        if (savedWelcome) {
+            document.getElementById('welcomeMessage').value = savedWelcome;
+        }
+
+        const savedLinks = localStorage.getItem(currentUser + '_quicklinks');
+        if (savedLinks) {
+            document.getElementById('quickLinks').innerHTML = savedLinks;
+        }
+
+        const savedGoals = localStorage.getItem(currentUser + '_goals');
+        if (savedGoals) {
+            document.getElementById('studyGoals').innerHTML = savedGoals;
+        }
+
+        // Handle menu toggle
+        const menuBtn = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const mainContent = document.querySelector('.main-content');
+
+        menuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Handle profile picture upload
+        document.getElementById('profileUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePic').src = e.target.result;
+                    localStorage.setItem(localStorage.getItem('registered_user') + '_profilePic', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Load saved profile picture
+        const savedProfilePic = localStorage.getItem(localStorage.getItem('registered_user') + '_profilePic');
+        if (savedProfilePic) {
+            document.getElementById('profilePic').src = savedProfilePic;
+        }
+
+        function saveNotes() {
+            const notes = document.getElementById('notesArea').value;
+            localStorage.setItem(localStorage.getItem('registered_user') + '_notes', notes);
+            alert('Notes saved successfully!');
+        }
+
+        function logout() {
+            localStorage.removeItem('logged_in');
+            window.location.href = 'index.html';
+        }
+
+        function showSection(section) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section-container');
+            sections.forEach(s => s.style.display = 'none');
+            
+            // Show selected section
+            document.getElementById(section).style.display = 'block';
+        }
+
+        function saveDashboard() {
+            const currentUser = localStorage.getItem('registered_user');
+            const welcome = document.getElementById('welcomeMessage').value;
+            const links = document.getElementById('quickLinks').innerHTML;
+            const goals = document.getElementById('studyGoals').innerHTML;
+
+            localStorage.setItem(currentUser + '_welcome', welcome);
+            localStorage.setItem(currentUser + '_quicklinks', links);
+            localStorage.setItem(currentUser + '_goals', goals);
+
+            alert('Dashboard saved successfully!');
+        }
+
+        // Show home section by default
+        showSection('home');
+    </script>
 </body>
 </html>
