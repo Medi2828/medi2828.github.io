@@ -209,7 +209,7 @@
 </head>
 <body>
     <script>
-        // Check if user is logged in
+        
         if (!localStorage.getItem('logged_in')) {
             window.location.href = 'index.html';
         }
@@ -264,17 +264,17 @@
             window.location.href = 'index.html';
         }
 
-        // Set username
+        // Maak username
         const currentUser = localStorage.getItem('registered_user');
         document.getElementById('username').textContent = currentUser;
 
-        // Load saved notes
+        // Laad opgeslagen notes
         const savedNotes = localStorage.getItem(currentUser + '_notes');
         if (savedNotes) {
             document.getElementById('notesArea').value = savedNotes;
         }
 
-        // Load saved dashboard content
+        // Load opgeslagen dashboard 
         const savedWelcome = localStorage.getItem(currentUser + '_welcome');
         if (savedWelcome) {
             document.getElementById('welcomeMessage').value = savedWelcome;
@@ -290,7 +290,7 @@
             document.getElementById('studyGoals').innerHTML = savedGoals;
         }
 
-        // Handle menu toggle
+        // Menu toggle
         const menuBtn = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('.nav-menu');
         const mainContent = document.querySelector('.main-content');
@@ -300,7 +300,7 @@
             mainContent.classList.toggle('expanded');
         });
 
-        // Handle profile picture upload
+        // Profile picture upload
         document.getElementById('profileUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -313,7 +313,7 @@
             }
         });
 
-        // Load saved profile picture
+        // Laad opgeslagen pfp
         const savedProfilePic = localStorage.getItem(localStorage.getItem('registered_user') + '_profilePic');
         if (savedProfilePic) {
             document.getElementById('profilePic').src = savedProfilePic;
@@ -331,11 +331,11 @@
         }
 
         function showSection(section) {
-            // Hide all sections
+            // Hide 
             const sections = document.querySelectorAll('.section-container');
             sections.forEach(s => s.style.display = 'none');
             
-            // Show selected section
+            // Show 
             document.getElementById(section).style.display = 'block';
         }
 
