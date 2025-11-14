@@ -217,7 +217,7 @@
     <div class="nav-menu">
         <button class="menu-toggle">≡</button>
         <div class="profile-section">
-            <img src="data:image/svg+xml;base64,https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fdefault-profile-picture&psig=AOvVaw2VkRuscb_a2EXHVybvlM1d&ust=1763109284207000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKDOuYfc7pADFQAAAAAdAAAAABAE" alt="Profile Photo" class="profile-pic" id="profilePic">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2UwZTBlMCIgZD0iTTAgMGgyNHYyNEgweiIvPjxwYXRoIGZpbGw9IiM5ZTllOWUiIGQ9Ik0xMiAxMmMyLjIxIDAgNC0xLjc5IDQtNHMtMS43OS00LTQtNC00IDEuNzktNCA0IDEuNzkgNCA0IDR6bTAgMmMtMi42NyAwLTggMS4zNC04IDR2Mmg3LjVIMjJ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+PC9zdmc+" alt="Profile Photo" class="profile-pic" id="profilePic">
             <div class="profile-upload">
                 <label for="profileUpload" class="upload-btn">Change Photo</label>
                 <input type="file" id="profileUpload" accept="image/*">
@@ -269,7 +269,7 @@
         document.getElementById('username').textContent = currentUser;
 
         // Laad opgeslagen notes
-        const savedNotes = localStorage.getItem(currentUser + '_notes');  
+        const savedNotes = localStorage.getItem(currentUser + '_notes');
         if (savedNotes) {
             document.getElementById('notesArea').value = savedNotes;
         }
