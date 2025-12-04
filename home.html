@@ -346,12 +346,13 @@
                 <input type="file" id="profileUpload" accept="image/*">
             </div>
             <div class="profile-name">Hi <span id="username">User</span>!</div>
-        </div>
+        </div> 
         <ul class="nav-links">
             <li><a href="#" onclick="showSection('home')">Home</a></li>
             <li><a href="#" onclick="showSection('notes')">Notes</a></li>
             <li><a href="#" onclick="showSection('agenda')">Agenda</a></li>
             <li><a href="#" onclick="showSection('tools')">Study Tools</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
             <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
     </div>
@@ -360,16 +361,16 @@
         <div id="home" class="section-container">
             <h2>My Dashboard</h2>
             <div class="dashboard-section">
-                <h3>Welcome Message</h3>
-                <textarea id="welcomeMessage" class="editable-area" placeholder="Add a personal welcome message..."></textarea>
+                <h3>Quick Notes</h3>
+                <textarea id="welcomeMessage" class="editable-area" placeholder="Add some miscellaneous notes. . ."></textarea>
             </div>
             <div class="dashboard-section">
                 <h3>Quick Links</h3>
-                <div id="quickLinks" class="editable-area" contenteditable="true" placeholder="Add your frequently used links here..."></div>
+                <div id="quickLinks" class="editable-area" contenteditable="true" placeholder="Add your frequently used links. . ."></div>
             </div>
             <div class="dashboard-section">
                 <h3>Study Goals</h3>
-                <div id="studyGoals" class="editable-area" contenteditable="true" placeholder="List your study goals here..."></div>
+                <div id="studyGoals" class="editable-area" contenteditable="true" placeholder="Add your Study Goals here. . ."></div>
             </div>
             <button onclick="saveDashboard()" class="save-btn">Save Dashboard</button>
         </div>
@@ -508,10 +509,10 @@
             alert('Dashboard saved successfully!');
         }
 
-        // Show home section by default
+        // laat home zien 
         showSection('home');
 
-        // Calendar functionality
+        // Kalender
         let currentDate = new Date();
         let tasks = {};
         let draggedTask = null;
