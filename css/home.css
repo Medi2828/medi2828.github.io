@@ -1,0 +1,323 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+.nav-menu {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: transform 0.3s;
+}
+.nav-menu.collapsed {
+    transform: translateX(-220px);
+}
+.menu-toggle {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #0078d7;
+}
+.profile-section {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-top: 20px;
+}
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+    border: 3px solid #0078d7;
+}
+.profile-name {
+    font-size: 1.2em;
+    color: #333;
+    margin: 10px 0;
+}
+.nav-links {
+    list-style: none;
+    padding: 0;
+}
+.nav-links li {
+    margin: 10px 0;
+}
+.nav-links a {
+    color: #666;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+.nav-links a:hover {
+    background: #f0f8ff;
+    color: #0078d7;
+}
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s;
+}
+.main-content.expanded {
+    margin-left: 30px;
+}
+.section-container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+#notesArea {
+    width: 100%;
+    min-height: 400px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+.save-btn {
+    background: #0078d7;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.dashboard-section {
+    margin-bottom: 25px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+.dashboard-section h3 {
+    color: #0078d7;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.editable-area {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    background: white;
+}
+[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    color: #999;
+    font-style: italic;
+}
+.save-btn:hover {
+    background: #006cbd;
+}
+.profile-upload {
+    margin-top: 10px;
+}
+#profileUpload {
+    display: none;
+}
+.upload-btn {
+    background: #0078d7;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.calendar-nav {
+    background: #0078d7;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.calendar-nav:hover {
+    background: #006cbd;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.calendar-day {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    min-height: 100px;
+    border: 2px solid #ddd;
+    transition: background 0.2s;
+}
+.calendar-day.other-month {
+    opacity: 0.5;
+}
+.calendar-day.today {
+    background: #e8f5e9;
+    border-color: #4caf50;
+}
+.calendar-day-header {
+    font-weight: bold;
+    color: #0078d7;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+.task-item {
+    background: #0078d7;
+    color: white;
+    padding: 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    cursor: move;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.task-item:hover {
+    background: #006cbd;
+}
+.task-input-section {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+.task-input-group {
+    display: flex;
+    gap: 10px;
+}
+.task-input-group input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.task-input-group select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.task-input-group button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.task-input-group button:hover {
+    background: #45a049;
+}
+.task-item.blue {
+    background: #0078d7;
+}
+.task-item.red {
+    background: #d32f2f;
+}
+.task-item.green {
+    background: #4caf50;
+}
+.task-item.purple {
+    background: #7c3aed;
+}
+.task-item.orange {
+    background: #ff9800;
+}
+.task-item.pink {
+    background: #e91e63;
+}
+.task-delete-btn {
+    position: relative;
+    float: right;
+    background: rgba(255,255,255,0.3);
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 10px;
+}
+.task-delete-btn:hover {
+    background: rgba(255,255,255,0.6);
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 8px;
+    padding: 32px;
+}
+h1 {
+    color: #333;
+    margin-bottom: 8px;
+}
+h2 {
+    color: #0078d7;
+    margin-top: 32px;
+}
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+.profile img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0078d7;
+}
+.about {
+    margin-bottom: 24px;
+}
+.projects {
+    list-style: none;
+    padding: 0;
+}
+.projects li {
+    background: #f0f8ff;
+    margin-bottom: 12px;
+    padding: 16px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,120,215,0.05);
+}
+.contact {
+    margin-top: 32px;
+}
+.contact a {
+    color: #0078d7;
+    text-decoration: none;
+}
+.contact a:hover {
+    text-decoration: underline;
+}
