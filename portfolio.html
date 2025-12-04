@@ -47,7 +47,7 @@
       </div>
 
       <h2>About</h2>
-      <textarea id="aboutText" style="width:100%;min-height:80px;padding:8px;border-radius:6px;border:1px solid #ddd;">I am a student working on web projects and study tools. This portfolio shows a few sample projects and contact links.</textarea>
+      <textarea id="aboutText" style="width:100%;min-height:80px;padding:8px;border-radius:6px;border:1px solid #ddd;">I am a student. This portfolio shows a few sample projects and contact links.</textarea>
 
       <h2>Projects</h2>
       <ul id="projectsList" class="projects">
@@ -59,7 +59,7 @@
           <div contenteditable = "true"><b>Project 2</b></div>
           <div contenteditable="true">Add details about your second project here.</div>
         </li>
-        <li>
+        <li>    
           <div contenteditable ="true"><b>Project 3</b></div>
           <div contenteditable="true">Add details about your third project here.</div>
         </li>
@@ -86,7 +86,7 @@
       if (saved.about) document.getElementById('aboutText').value = saved.about;
       if (saved.email) document.getElementById('portfolioEmail').textContent = saved.email;
       if (saved.avatar) document.getElementById('portfolioAvatar').src = saved.avatar;
-      // projects: if saved.projects exists, replace project divs
+    
       if (Array.isArray(saved.projects)) {
         const projectsList = document.getElementById('projectsList');
         projectsList.innerHTML = '';
@@ -118,7 +118,7 @@
 
     document.getElementById('savePortfolio').addEventListener('click', savePortfolio);
 
-    // Make avatar editable by clicking the image
+
     document.getElementById('portfolioAvatar').addEventListener('click', function() {
       document.getElementById('portfolioAvatarUpload').click();
     });
