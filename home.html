@@ -38,7 +38,7 @@
             <h2>My Dashboard</h2>
             <div class="dashboard-section">
                 <h3>Quick Notes</h3>
-                <textarea id="welcomeMessage" class="editable-area" placeholder="Add some miscellaneous notes. . ."></textarea>
+                <div id="welcomeMessage" class="editable-area" contenteditable="true" placeholder="Add some miscellaneous notes..."></div>
             </div>
             <div class="dashboard-section">
                 <h3>Quick Links</h3>
@@ -110,7 +110,7 @@
         // Load opgeslagen dashboard 
         const savedWelcome = localStorage.getItem(currentUser + '_welcome');
         if (savedWelcome) {
-            document.getElementById('welcomeMessage').value = savedWelcome;
+            document.getElementById('welcomeMessage').innerHTML = savedWelcome;
         }
 
         const savedLinks = localStorage.getItem(currentUser + '_quicklinks');
@@ -174,7 +174,7 @@
 
         function saveDashboard() {
             const currentUser = localStorage.getItem('registered_user');
-            const welcome = document.getElementById('welcomeMessage').value;
+            const welcome = document.getElementById('welcomeMessage').innerHTML;
             const links = document.getElementById('quickLinks').innerHTML;
             const goals = document.getElementById('studyGoals').innerHTML;
 
