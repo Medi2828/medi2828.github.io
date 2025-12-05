@@ -25,3 +25,14 @@ h2{color:var(--accent);margin-top:28px}
 .save-btn:hover {
   background: #006cbd;
 }
+
+.profile-upload { margin-top: 10px; }
+#portfolioAvatarUpload { display: none; }
+.upload-btn {
+  background: #0078d7;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}

@@ -53,7 +53,11 @@
 
         <div id="notes" class="section-container" style="display: none;">
             <h2>My Notes</h2>
-            <textarea id="notesArea" placeholder="Start taking notes here..."></textarea>
+            <div class="format-toolbar">
+                <button type="button" class="format-btn" onclick="formatNotes('bold')"><strong>B</strong></button>
+                <button type="button" class="format-btn" onclick="formatNotes('italic')"><em>I</em></button>
+            </div>
+            <div id="notesArea" class="editable-area" contenteditable="true" placeholder="Start taking notes here..."></div>
             <button onclick="saveNotes()" class="save-btn">Save Notes</button>
         </div>
 
@@ -92,22 +96,18 @@
     </div>
 
     <script>
-        // Check login status
+        
         if (!localStorage.getItem('logged_in')) {
             window.location.href = 'index.html';
         }
-
-        // Maak username
         const currentUser = localStorage.getItem('registered_user');
         document.getElementById('username').textContent = currentUser;
 
-        // Laad opgeslagen notes
         const savedNotes = localStorage.getItem(currentUser + '_notes');  
         if (savedNotes) {
-            document.getElementById('notesArea').value = savedNotes;
+            document.getElementById('notesArea').innerHTML = savedNotes;
         }
 
-        // Load opgeslagen dashboard 
         const savedWelcome = localStorage.getItem(currentUser + '_welcome');
         if (savedWelcome) {
             document.getElementById('welcomeMessage').innerHTML = savedWelcome;
@@ -123,7 +123,6 @@
             document.getElementById('studyGoals').innerHTML = savedGoals;
         }
 
-        // Menu toggle
         const menuBtn = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('.nav-menu');
         const mainContent = document.querySelector('.main-content');
@@ -146,16 +145,22 @@
             }
         });
 
-        // Laad opgeslagen pfp
         const savedProfilePic = localStorage.getItem(localStorage.getItem('registered_user') + '_profilePic');
         if (savedProfilePic) {
             document.getElementById('profilePic').src = savedProfilePic;
         }
 
         function saveNotes() {
-            const notes = document.getElementById('notesArea').value;
+            const notes = document.getElementById('notesArea').innerHTML;
             localStorage.setItem(localStorage.getItem('registered_user') + '_notes', notes);
             alert('Notes saved successfully!');
+        }
+
+        function formatNotes(command) {
+            const notes = document.getElementById('notesArea');
+            notes.focus();
+
+            document.execCommand(command, false, null);
         }
 
         function logout() {
@@ -164,11 +169,10 @@
         }
 
         function showSection(section) {
-            // Hide 
+         
             const sections = document.querySelectorAll('.section-container');
             sections.forEach(s => s.style.display = 'none');
-            
-            // Show 
+
             document.getElementById(section).style.display = 'block';
         }
 
@@ -185,10 +189,9 @@
             alert('Dashboard saved successfully!');
         }
 
-        // laat home zien 
+       
         showSection('home');
 
-        // Kalender
         let currentDate = new Date();
         let tasks = {};
         let draggedTask = null;
@@ -214,23 +217,21 @@
             const calendarGrid = document.getElementById('calendarGrid');
             calendarGrid.innerHTML = '';
 
-            // Adjust first day to Monday (1) instead of Sunday (0)
+            // eerste dag maandag ipv zondag
             let startDay = firstDay.getDay() - 1;
             if (startDay === -1) startDay = 6;
 
-            // Previous month days
+        
             for (let i = prevLastDay.getDate() - startDay + 1; i <= prevLastDay.getDate(); i++) {
                 const dayDiv = createDayElement(i, month - 1, 'other-month');
                 calendarGrid.appendChild(dayDiv);
             }
-
-            // Current month days
+       
             for (let i = 1; i <= lastDay.getDate(); i++) {
                 const dayDiv = createDayElement(i, month);
                 calendarGrid.appendChild(dayDiv);
             }
 
-            // Next month days
             for (let i = 1; i <= (42 - calendarGrid.children.length); i++) {
                 const dayDiv = createDayElement(i, month + 1, 'other-month');
                 calendarGrid.appendChild(dayDiv);
@@ -370,7 +371,7 @@
             renderCalendar();
         }
 
-        // Initialize calendar
+    
         initCalendar();
     </script>
 </body>

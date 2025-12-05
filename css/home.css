@@ -235,6 +235,22 @@ body {
 .task-input-group button:hover {
     background: #45a049;
 }
+
+
+.format-toolbar { display:flex; gap:8px; margin-bottom:8px; }
+.format-btn {
+    width:36px;
+    height:34px;
+    border-radius:6px;
+    border:1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+.format-btn:hover { background:#f0f8ff; }
 .task-item.blue {
     background: #0078d7;
 }

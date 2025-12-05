@@ -10,7 +10,11 @@
   <div class="wrap">
     <div class="card">
       <div class="header">
-        <img id="portfolioAvatar" class="avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96'><rect width='96' height='96' fill='black'/></svg>" alt="Profile" title="Click to change profile picture">
+        <img id="portfolioAvatar" class="avatar profile-pic" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='96' height='96'><rect width='96' height='96' fill='black'/></svg>" alt="Profile Photo" title="Change Photo">
+        <div class="profile-upload" style="margin-left:8px;">
+          <label for="portfolioAvatarUpload" class="upload-btn">Change Photo</label>
+          <input type="file" id="portfolioAvatarUpload" accept="image/*">
+        </div>
         <div>
          <h1 id="portfolioName" contenteditable="true" style="outline:1px dashed #ccc;">Your Name</h1>
           <p id="portfolioLead" class="lead" contenteditable="true">Student</p>
@@ -24,16 +28,16 @@
       <h2>Projects</h2>
       <ul id="projectsList" class="projects">
         <li>
-          <div contenteditable="true"><b>Project 1</b></div>
-          <div contenteditable="true">Add details about your first project here.</div>
+          <strong contenteditable="true">Project 1</strong>
+          <div contenteditable="true">Add details about your 1st project here.</div>
         </li>
         <li>
-          <div contenteditable = "true"><b>Project 2</b></div>
-          <div contenteditable="true">Add details about your second project here.</div>
+          <strong contenteditable="true">Project 2</strong>
+          <div contenteditable="true">Add details about your 2nd project here.</div>
         </li>
-        <li>    
-          <div contenteditable ="true"><b>Project 3</b></div>
-          <div contenteditable="true">Add details about your third project here.</div>
+        <li>
+          <strong contenteditable="true">Project 3</strong>
+          <div contenteditable="true">Add details about your 3rd project here.</div>
         </li>
       </ul>
 
@@ -41,7 +45,6 @@
       <p class="contact">Email: <span id="portfolioEmail" contenteditable="true" style="outline:1px dashed #ccc;">your.email@example.com</span></p>
 
       <div style="margin-top:18px;display:flex;gap:10px;align-items:center;">
-        <input type="file" id="portfolioAvatarUpload" accept="image/*" style="display:none">
         <button id="savePortfolio" class="save-btn">Save Portfolio</button>
       </div>
     </div>
@@ -50,21 +53,23 @@
   <script>
 
     const user = localStorage.getItem('registered_user') || 'default';
-    const saved = JSON.parse(localStorage.getItem(user + '_portfolio') || '{}');
 
     function loadPortfolio() {
+      const saved = JSON.parse(localStorage.getItem(user + '_portfolio') || '{}');
       if (saved.name) document.getElementById('portfolioName').textContent = saved.name;
       if (saved.lead) document.getElementById('portfolioLead').textContent = saved.lead;
       if (saved.about) document.getElementById('aboutText').value = saved.about;
       if (saved.email) document.getElementById('portfolioEmail').textContent = saved.email;
       if (saved.avatar) document.getElementById('portfolioAvatar').src = saved.avatar;
-    
+
       if (Array.isArray(saved.projects)) {
         const projectsList = document.getElementById('projectsList');
         projectsList.innerHTML = '';
         saved.projects.forEach(p => {
           const li = document.createElement('li');
-          const strong = document.createElement('strong'); strong.textContent = p.title;
+          const strong = document.createElement('strong');
+          strong.textContent = p.title;
+          strong.contentEditable = true;
           const desc = document.createElement('div'); desc.contentEditable = true; desc.innerHTML = p.desc;
           li.appendChild(strong); li.appendChild(desc); projectsList.appendChild(li);
         });
@@ -86,6 +91,8 @@
       const data = { name, lead, about, email, avatar, projects };
       localStorage.setItem(user + '_portfolio', JSON.stringify(data));
       alert('Portfolio saved for ' + user);
+      // refresh UI from saved data so headers/contenteditable state stays consistent
+      loadPortfolio();
     }
 
     document.getElementById('savePortfolio').addEventListener('click', savePortfolio);
