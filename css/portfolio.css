@@ -29,6 +29,7 @@ h2{color:var(--accent);margin-top:28px}
 .profile-upload { margin-top: 10px; }
 #portfolioAvatarUpload { display: none; }
 .upload-btn {
+
   background: #0078d7;
   color: #fff;
   padding: 5px 10px;

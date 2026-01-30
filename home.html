@@ -16,7 +16,7 @@
     <div class="nav-menu">
         <button class="menu-toggle">≡</button>
         <div class="profile-section">
-            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2UwZTBlMCIgZD0iTTAgMGgyNHYyNEgweiIvPjxwYXRoIGZpbGw9IiM5ZTllOWUiIGQ9Ik0xMiAxMmMyLjIxIDAgNC0xLjc5IDQtNHMtMS43OS00LTQtNC00IDEuNzktNCA0IDEuNzkgNCA0IDR6bTAgMmMtMi42NyAwLTggMS4zNC04IDR2Mmg3LjVIMjJ2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+PC9zdmc+" alt="Profile Photo" class="profile-pic" id="profilePic">
+            <img src="img/Black.jpg" class="profile-pic" id="profilePic">
             <div class="profile-upload">
                 <label for="profileUpload" class="upload-btn">Change Photo</label>
                 <input type="file" id="profileUpload" accept="image/*">
@@ -93,6 +93,15 @@
             </div>
             <div class="calendar-grid" id="calendarGrid"></div>
         </div>
+
+        <div id="tools" class="section-container" style="display: none;">
+            <h2>Study Tools</h2>
+            <div class="dashboard-section">
+                <h3>Sources Notes</h3>
+                <div id="sourcesNotes" class="editable-area" contenteditable="true" placeholder="Add notes about your study sources..."></div>
+            </div>
+            <button onclick="saveStudyTools()" class="save-btn">Save Study Tools</button>
+        </div>
     </div>
 
     <script>
@@ -132,7 +141,7 @@
             mainContent.classList.toggle('expanded');
         });
 
-        // Profile picture upload
+        //profielfoto
         document.getElementById('profileUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -189,9 +198,18 @@
             alert('Dashboard saved successfully!');
         }
 
+        function saveStudyTools() {
+            const currentUser = localStorage.getItem('registered_user');
+            const sourcesNotes = document.getElementById('sourcesNotes').innerHTML;
+
+            localStorage.setItem(currentUser + '_sourcesNotes', sourcesNotes);
+
+            alert('Study Tools saved successfully!');
+        }
+
        
         showSection('home');
-
+// kalender
         let currentDate = new Date();
         let tasks = {};
         let draggedTask = null;
@@ -296,14 +314,14 @@
                 dayDiv.style.background = '';
                 if (draggedTask) {
                     if (draggedTask.from !== dateStr) {
-                        // Remove from old date
+             // Remove from old date
                         if (tasks[draggedTask.from]) {
                             tasks[draggedTask.from].splice(draggedTask.index, 1);
                             if (tasks[draggedTask.from].length === 0) {
                                 delete tasks[draggedTask.from];
                             }
                         }
-                        // Add to new date
+             // Add to new date
                         if (!tasks[dateStr]) {
                             tasks[dateStr] = [];
                         }
@@ -373,6 +391,120 @@
 
     
         initCalendar();
+
+        let calcDisplay = '';
+        let calcOperator = null;
+        let calcPrevValue = null;
+        let calcShouldResetDisplay = false;
+
+        function openCalculator() {
+            document.getElementById('calculatorModal').style.display = 'flex';
+            calcDisplay = '';
+            calcOperator = null;
+            calcPrevValue = null;
+            calcShouldResetDisplay = false;
+            updateCalcDisplay();
+        }
+
+        function closeCalculator() {
+            document.getElementById('calculatorModal').style.display = 'none';
+        }
+
+        function updateCalcDisplay() {
+            document.getElementById('calcDisplay').textContent = calcDisplay || '0';
+        }
+
+        function calcAppendNumber(num) {
+            if (calcShouldResetDisplay) {
+                calcDisplay = '';
+                calcShouldResetDisplay = false;
+            }
+            calcDisplay += num;
+            updateCalcDisplay();
+        }
+
+        function calcSetOperator(op) {
+            if (calcDisplay === '') return;
+            if (calcPrevValue === null) {
+                calcPrevValue = parseFloat(calcDisplay);
+            } else if (calcOperator) {
+                calcPerform();
+            }
+            calcOperator = op;
+            calcShouldResetDisplay = true;
+        }
+
+        function calcPerform() {
+            if (calcOperator === null || calcPrevValue === null || calcDisplay === '') return;
+            const current = parseFloat(calcDisplay);
+            let result;
+            switch (calcOperator) {
+                case '+':
+                    result = calcPrevValue + current;
+                    break;
+                case '-':
+                    result = calcPrevValue - current;
+                    break;
+                case '×':
+                    result = calcPrevValue * current;
+                    break;
+                case '÷':
+                    result = current !== 0 ? calcPrevValue / current : 0;
+                    break;
+                default:
+                    return;
+            }
+            calcDisplay = result.toString();
+            calcOperator = null;
+            calcPrevValue = null;
+            calcShouldResetDisplay = true;
+            updateCalcDisplay();
+        }
+
+        function calcClear() {
+            calcDisplay = '';
+            calcOperator = null;
+            calcPrevValue = null;
+            calcShouldResetDisplay = false;
+            updateCalcDisplay();
+        }
+
+        document.getElementById('calculatorModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCalculator();
+            }
+        });
     </script>
+
+    <button onclick="openCalculator()" class="calc-fab">🧮</button>
+
+    <div id="calculatorModal" class="modal" style="display:none;">
+        <div class="calculator-box">
+            <div class="calc-header">
+                <span>Calculator</span>
+                <button onclick="closeCalculator()" class="calc-close">&times;</button>
+            </div>
+            <div id="calcDisplay" class="calc-display">0</div>
+            <div class="calc-buttons">
+                <button onclick="calcClear()" class="calc-btn calc-clear">C</button>
+                <button onclick="calcSetOperator('÷')" class="calc-btn calc-op">÷</button>
+                <button onclick="calcSetOperator('×')" class="calc-btn calc-op">×</button>
+                <button onclick="calcAppendNumber('7')" class="calc-btn">7</button>
+                <button onclick="calcAppendNumber('8')" class="calc-btn">8</button>
+                <button onclick="calcAppendNumber('9')" class="calc-btn">9</button>
+                <button onclick="calcSetOperator('-')" class="calc-btn calc-op">−</button>
+                <button onclick="calcAppendNumber('4')" class="calc-btn">4</button>
+                <button onclick="calcAppendNumber('5')" class="calc-btn">5</button>
+                <button onclick="calcAppendNumber('6')" class="calc-btn">6</button>
+                <button onclick="calcSetOperator('+')" class="calc-btn calc-op">+</button>
+                <button onclick="calcAppendNumber('1')" class="calc-btn">1</button>
+                <button onclick="calcAppendNumber('2')" class="calc-btn">2</button>
+                <button onclick="calcAppendNumber('3')" class="calc-btn">3</button>
+                <button onclick="calcAppendNumber('0')" class="calc-btn calc-zero">0</button>
+                <button onclick="calcAppendNumber('.')" class="calc-btn">.</button>
+                <button onclick="calcPerform()" class="calc-btn calc-equals">=</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
