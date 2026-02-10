@@ -28,6 +28,7 @@
             <li><a href="#" onclick="showSection('notes')">Notes</a></li>
             <li><a href="#" onclick="showSection('agenda')">Agenda</a></li>
             <li><a href="#" onclick="showSection('tools')">Study Tools</a></li>
+             <li><a href="#" onclick="showSection('todo')">To Do List</a></li>
             <li><a href="portfolio.html">Portfolio</a></li>
             <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
@@ -102,6 +103,13 @@
             </div>
             <button onclick="saveStudyTools()" class="save-btn">Save Study Tools</button>
         </div>
+         <div id="todo" class="section-container" style="display: none;">
+            <h2>To Do List</h2>
+            <input type="text" id="todoInput" placeholder="Add a task...">
+            <button onclick="addTodo()">Add</button>
+            <ul id="todoList" class="todo-list"></ul>
+            <button onclick="saveTodo()" class="save-btn">Save</button>
+        </div>
     </div>
 
     <script>
@@ -141,7 +149,7 @@
             mainContent.classList.toggle('expanded');
         });
 
-        //profielfoto
+      
         document.getElementById('profileUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -205,6 +213,66 @@
             localStorage.setItem(currentUser + '_sourcesNotes', sourcesNotes);
 
             alert('Study Tools saved successfully!');
+        }
+
+        let todos = [];
+        function loadTodos() {
+            const currentUser = localStorage.getItem('registered_user');
+            const saved = localStorage.getItem(currentUser + '_todos');
+            if (saved) {
+                todos = JSON.parse(saved);
+                renderTodos();
+            }
+        }
+
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const task = input.value;
+
+            if (task === '') {
+                return;
+            }
+
+            todos.push({ text: task, done: false });
+            input.value = '';
+            renderTodos();
+        }
+
+        function renderTodos() {
+            const list = document.getElementById('todoList');
+            list.innerHTML = '';
+            todos.forEach((todo, i) => {
+                const li = document.createElement('li');
+                li.className = 'todo-item';
+                if (todo.done) li.classList.add('completed');
+
+                const cbId = `todo_cb_${Date.now()}_${i}`;
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = cbId;
+                checkbox.className = 'todo-checkbox';
+                checkbox.checked = !!todo.done;
+                checkbox.addEventListener('change', (e) => {
+                    todos[i].done = e.target.checked;
+                    renderTodos();
+                });
+
+                const label = document.createElement('label');
+                label.className = 'todo-label';
+                label.htmlFor = cbId;
+                label.textContent = todo.text;
+
+                li.appendChild(checkbox);
+                li.appendChild(label);
+                list.appendChild(li);
+            });
+        }
+
+        function saveTodo() {
+            const currentUser = localStorage.getItem('registered_user');
+            localStorage.setItem(currentUser + '_todos', JSON.stringify(todos));
+            alert('Saved!');
         }
 
        
@@ -391,6 +459,7 @@
 
     
         initCalendar();
+        loadTodos();
 
         let calcDisplay = '';
         let calcOperator = null;
@@ -483,7 +552,7 @@
             <div class="calc-header">
                 <span>Calculator</span>
                 <button onclick="closeCalculator()" class="calc-close">&times;</button>
-            </div>
+            </div>                              
             <div id="calcDisplay" class="calc-display">0</div>
             <div class="calc-buttons">
                 <button onclick="calcClear()" class="calc-btn calc-clear">C</button>
