@@ -27,8 +27,10 @@
             <li><a href="#" onclick="showSection('home')">Home</a></li>
             <li><a href="#" onclick="showSection('notes')">Notes</a></li>
             <li><a href="#" onclick="showSection('agenda')">Agenda</a></li>
+            <li><a href="#" onclick="showSection('todo')">To Do List</a></li>
+            <li><a href="#" onclick="showSection('timer')">Timer</a></li>
             <li><a href="#" onclick="showSection('tools')">Study Tools</a></li>
-             <li><a href="#" onclick="showSection('todo')">To Do List</a></li>
+            <li><a href="#" onclick ="showSection('flashcards')">Flashcards</a></li>
             <li><a href="portfolio.html">Portfolio</a></li>
             <li><a href="#" onclick="logout()">Logout</a></li>
         </ul>
@@ -110,7 +112,68 @@
             <ul id="todoList" class="todo-list"></ul>
             <button onclick="saveTodo()" class="save-btn">Save</button>
         </div>
-    </div>
+        <div id="timer" class="section-container" style="display: none;">
+            <h2>Study Timer</h2>
+            <div class="timer-container">
+                <div class="timer-display" id="timerDisplay">00:00</div>
+                <div class="timer-inputs">
+                    <div class="timer-input-group">
+                        <label for="timerMinutes">Minutes:</label>
+                        <input type="number" id="timerMinutes" min="0" value="25" placeholder="0">
+                    </div>
+                    <div class="timer-input-group">
+                        <label for="timerSeconds">Seconds:</label>
+                        <input type="number" id="timerSeconds" min="0" max="59" value="0" placeholder="0">
+                    </div>
+                </div>
+                <div class="timer-buttons">
+                    <button onclick="startTimer()" class="save-btn">Start</button>
+                    <button onclick="pauseTimer()" class="save-btn">Pause</button>
+                    <button onclick="resetTimer()" class="cancel-btn">Reset</button>
+                </div>
+            </div>
+        </div>
+        <div id="flashcards" class="section-container" style="display: none;">
+            <h2>Flashcards</h2>
+            <div class="flashcard-controls">
+                <button id="add-flashcard" class="save-btn">+ Add New Flashcard</button>
+            </div>
+            
+            <div id="flashcard-form" class="flashcard-form" style="display: none;">
+                <div class="flashcard-form-header">
+                    <h3>Create Flashcard</h3>
+                    <button id="close-flashcard-form" class="close-btn">&times;</button>
+                </div>
+                <div class="flashcard-form-body">
+                    <label for="question">Question:</label>
+                    <textarea 
+                        id="question" 
+                        class="flashcard-input"
+                        rows="3"
+                        placeholder="Type the question here...">
+                    </textarea>
+                    
+                    <label for="answer">Answer:</label>
+                    <textarea 
+                        id="answer"
+                        class="flashcard-input"
+                        rows="3"
+                        placeholder="Type the answer here...">
+                    </textarea>
+                    
+                    <div id="flashcard-error" class="flashcard-error" style="display: none;">
+                        Input fields cannot be empty
+                    </div>
+                    
+                    <div class="flashcard-form-buttons">
+                        <button id="save-flashcard" class="save-btn">Save Flashcard</button>
+                        <button id="cancel-flashcard" class="cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="flashcard-list" class="flashcard-list"></div>
+        </div>
 
     <script>
         
@@ -460,6 +523,159 @@
     
         initCalendar();
         loadTodos();
+
+        // Flashcard functionality
+        let flashcards = [];
+
+        function loadFlashcards() {
+            const currentUser = localStorage.getItem('registered_user');
+            const saved = localStorage.getItem(currentUser + '_flashcards');
+            if (saved) {
+                flashcards = JSON.parse(saved);
+            }
+            renderFlashcards();
+        }
+
+        function renderFlashcards() {
+            const list = document.getElementById('flashcard-list');
+            list.innerHTML = '';
+
+            if (flashcards.length === 0) {
+                list.innerHTML = '<div class="flashcard-empty">No flashcards yet. Create one to get started.</div>';
+                return;
+            }
+
+            flashcards.forEach((card, index) => {
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'flashcard';
+                cardDiv.innerHTML = `
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <div class="flashcard-label">Question</div>
+                            <div class="flashcard-content">${escapeHtml(card.question)}</div>
+                        </div>
+                        <div class="flashcard-back">
+                            <div class="flashcard-label">Answer</div>
+                            <div class="flashcard-content">${escapeHtml(card.answer)}</div>
+                        </div>
+                    </div>
+                    <div class="flashcard-footer">
+                        <button class="flashcard-delete" onclick="deleteFlashcard(${index})">Delete</button>
+                    </div>
+                `;
+                cardDiv.addEventListener('click', () => {
+                    cardDiv.classList.toggle('flipped');
+                });
+                list.appendChild(cardDiv);
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showFlashcardForm() {
+            document.getElementById('flashcard-form').style.display = 'block';
+            document.getElementById('question').focus();
+        }
+
+        function hideFlashcardForm() {
+            document.getElementById('flashcard-form').style.display = 'none';
+            document.getElementById('question').value = '';
+            document.getElementById('answer').value = '';
+            document.getElementById('flashcard-error').style.display = 'none';
+        }
+
+        function saveFlashcard() {
+            const question = document.getElementById('question').value.trim();
+            const answer = document.getElementById('answer').value.trim();
+            const errorDiv = document.getElementById('flashcard-error');
+
+            if (question === '' || answer === '') {
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            flashcards.push({ question, answer });
+            const currentUser = localStorage.getItem('registered_user');
+            localStorage.setItem(currentUser + '_flashcards', JSON.stringify(flashcards));
+            renderFlashcards();
+            hideFlashcardForm();
+        }
+
+        function deleteFlashcard(index) {
+            if (confirm('Delete this flashcard?')) {
+                flashcards.splice(index, 1);
+                const currentUser = localStorage.getItem('registered_user');
+                localStorage.setItem(currentUser + '_flashcards', JSON.stringify(flashcards));
+                renderFlashcards();
+            }
+        }
+
+        document.getElementById('add-flashcard').addEventListener('click', showFlashcardForm);
+        document.getElementById('close-flashcard-form').addEventListener('click', hideFlashcardForm);
+        document.getElementById('cancel-flashcard').addEventListener('click', hideFlashcardForm);
+        document.getElementById('save-flashcard').addEventListener('click', saveFlashcard);
+
+        loadFlashcards();
+
+        // Timer functionality
+        let timerInterval = null;
+        let timerRunning = false;
+        let timeRemaining = 0;
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerDisplay').textContent = 
+                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+        }
+
+        function startTimer() {
+            if (timerRunning) return;
+            
+            if (timeRemaining === 0) {
+                const minutes = parseInt(document.getElementById('timerMinutes').value) || 0;
+                const seconds = parseInt(document.getElementById('timerSeconds').value) || 0;
+                timeRemaining = minutes * 60 + seconds;
+                
+                if (timeRemaining === 0) {
+                    alert('Please set a time');
+                    return;
+                }
+            }
+            
+            timerRunning = true;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    timerRunning = false;
+                    alert('Time is up!');
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+            }
+        }
+
+        function resetTimer() {
+            pauseTimer();
+            timeRemaining = 0;
+            document.getElementById('timerDisplay').textContent = '00:00';
+            document.getElementById('timerMinutes').value = '25';
+            document.getElementById('timerSeconds').value = '0';
+        }
 
         let calcDisplay = '';
         let calcOperator = null;
