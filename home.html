@@ -41,14 +41,26 @@
             <h2>My Dashboard</h2>
             <div class="dashboard-section">
                 <h3>Quick Notes</h3>
+                <div class="format-toolbar">
+                    <button type="button" class="format-btn" onclick="formatText('welcomeMessage', 'bold')"><strong>B</strong></button>
+                    <button type="button" class="format-btn" onclick="formatText('welcomeMessage', 'italic')"><em>I</em></button>
+                </div>
                 <div id="welcomeMessage" class="editable-area" contenteditable="true" placeholder="Add some miscellaneous notes..."></div>
             </div>
             <div class="dashboard-section">
                 <h3>Quick Links</h3>
+                <div class="format-toolbar">
+                    <button type="button" class="format-btn" onclick="formatText('quickLinks', 'bold')"><strong>B</strong></button>
+                    <button type="button" class="format-btn" onclick="formatText('quickLinks', 'italic')"><em>I</em></button>
+                </div>
                 <div id="quickLinks" class="editable-area" contenteditable="true" placeholder="Add your frequently used links. . ."></div>
             </div>
             <div class="dashboard-section">
-                <h3>Study Goals</h3>    
+                <h3>Study Goals</h3>
+                <div class="format-toolbar">
+                    <button type="button" class="format-btn" onclick="formatText('studyGoals', 'bold')"><strong>B</strong></button>
+                    <button type="button" class="format-btn" onclick="formatText('studyGoals', 'italic')"><em>I</em></button>
+                </div>    
                 <div id="studyGoals" class="editable-area" contenteditable="true" placeholder="Add your Study Goals here. . ."></div>
             </div>
             <button onclick="saveDashboard()" class="save-btn">Save Dashboard</button>
@@ -101,6 +113,10 @@
             <h2>Study Tools</h2>
             <div class="dashboard-section">
                 <h3>Sources Notes</h3>
+                <div class="format-toolbar">
+                    <button type="button" class="format-btn" onclick="formatText('sourcesNotes', 'bold')"><strong>B</strong></button>
+                    <button type="button" class="format-btn" onclick="formatText('sourcesNotes', 'italic')"><em>I</em></button>
+                </div>
                 <div id="sourcesNotes" class="editable-area" contenteditable="true" placeholder="Add notes about your study sources..."></div>
             </div>
             <button onclick="saveStudyTools()" class="save-btn">Save Study Tools</button>
@@ -240,6 +256,12 @@
             const notes = document.getElementById('notesArea');
             notes.focus();
 
+            document.execCommand(command, false, null);
+        }
+
+        function formatText(elementId, command) {
+            const element = document.getElementById(elementId);
+            element.focus();
             document.execCommand(command, false, null);
         }
 
