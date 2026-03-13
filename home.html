@@ -700,16 +700,16 @@
         }
 
         let calcDisplay = '';
+        let calcCurrentNumber = '';
         let calcOperator = null;
         let calcPrevValue = null;
-        let calcShouldResetDisplay = false;
 
         function openCalculator() {
             document.getElementById('calculatorModal').style.display = 'flex';
             calcDisplay = '';
+            calcCurrentNumber = '';
             calcOperator = null;
             calcPrevValue = null;
-            calcShouldResetDisplay = false;
             updateCalcDisplay();
         }
 
@@ -718,32 +718,33 @@
         }
 
         function updateCalcDisplay() {
-            document.getElementById('calcDisplay').textContent = calcDisplay || '0';
+            const displayText = calcDisplay + calcCurrentNumber;
+            document.getElementById('calcDisplay').textContent = displayText || '0';
         }
 
         function calcAppendNumber(num) {
-            if (calcShouldResetDisplay) {
-                calcDisplay = '';
-                calcShouldResetDisplay = false;
-            }
-            calcDisplay += num;
+            if (num === '.' && calcCurrentNumber.includes('.')) return;
+            calcCurrentNumber += num;
             updateCalcDisplay();
         }
 
         function calcSetOperator(op) {
-            if (calcDisplay === '') return;
+            if (calcCurrentNumber === '') return;
             if (calcPrevValue === null) {
-                calcPrevValue = parseFloat(calcDisplay);
+                calcPrevValue = parseFloat(calcCurrentNumber);
             } else if (calcOperator) {
                 calcPerform();
+                calcPrevValue = parseFloat(calcCurrentNumber);
             }
             calcOperator = op;
-            calcShouldResetDisplay = true;
+            calcDisplay = calcPrevValue + ' ' + op + ' ';
+            calcCurrentNumber = '';
+            updateCalcDisplay();
         }
 
         function calcPerform() {
-            if (calcOperator === null || calcPrevValue === null || calcDisplay === '') return;
-            const current = parseFloat(calcDisplay);
+            if (calcOperator === null || calcPrevValue === null || calcCurrentNumber === '') return;
+            const current = parseFloat(calcCurrentNumber);
             let result;
             switch (calcOperator) {
                 case '+':
@@ -761,18 +762,18 @@
                 default:
                     return;
             }
-            calcDisplay = result.toString();
+            calcDisplay = '';
+            calcCurrentNumber = result.toString();
             calcOperator = null;
             calcPrevValue = null;
-            calcShouldResetDisplay = true;
             updateCalcDisplay();
         }
 
         function calcClear() {
             calcDisplay = '';
+            calcCurrentNumber = '';
             calcOperator = null;
             calcPrevValue = null;
-            calcShouldResetDisplay = false;
             updateCalcDisplay();
         }
 
