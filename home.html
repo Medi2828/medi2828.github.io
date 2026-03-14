@@ -383,7 +383,7 @@
             const lastDay = new Date(year, month + 1, 0);
             const prevLastDay = new Date(year, month, 0);
 
-            document.getElementById('monthYear').textContent = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+            document.getElementById('monthYear').textContent = currentDate.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
             const calendarGrid = document.getElementById('calendarGrid');
             calendarGrid.innerHTML = '';
